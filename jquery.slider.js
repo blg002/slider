@@ -23,7 +23,7 @@ if ( typeof Object.create !== 'function' ) {
 			self.$el           = $(el);
 			self.$panels_wrap  = self.$el.find('.slider-panels');
 			self.$tabs         = self.$el.find('.slider-tabs');
-			self.$nav          = self.$el.find('.slider-nav').show();
+			self.$nav          = self.$el.find('.slider-nav');
 			
 			self.$panels       = self.$panels_wrap.find('.slider-panel');
 			self.panels_length = self.$panels.length;
@@ -102,7 +102,7 @@ if ( typeof Object.create !== 'function' ) {
 			var self = this;
 
 			self.current = ( panel < 0 ) ? self.panels_length - 1 : panel % self.panels_length;
-			self.$tabs.find('a').removeAttr('data-current').eq(panel).attr('data-current','');
+			self.$tabs.find('a').removeAttr('data-current').eq(self.current).attr('data-current','');
 
 		  if ( self.config.panelLinking ) {
 		    self.updateUrlHash( self.$panels.eq(self.current).data('panel-id') )

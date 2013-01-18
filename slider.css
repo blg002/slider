@@ -24,7 +24,7 @@
   bottom: 0;
 }
 
-.slider-nav {
+.no-js .slider-nav {
   display: none;
 }
 
