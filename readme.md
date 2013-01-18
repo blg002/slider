@@ -1,0 +1,3 @@
+Slider, Carousel whatever you want to call it, I'm going with slider. So I created this and it slides things around in a carousel like way and will recalculate things on window resize (this could possibly be done better with some percentages), it with also optionally animate the height of the container, and you can set it up to do some deep linking.
+
+So if you can ignore the terrible code feel free to use it, if you can't feel free to fork/pull or leave notes.
