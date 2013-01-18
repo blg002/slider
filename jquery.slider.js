@@ -100,7 +100,6 @@ if ( typeof Object.create !== 'function' ) {
 		// -------------------------- methods -------------------------- //
 		setCurrent: function( panel ) {
 			var self = this;
-			console.log('here')
 
 			self.current = ( panel < 0 ) ? self.panels_length - 1 : panel % self.panels_length;
 			self.$tabs.find('a').removeAttr('data-current').eq(panel).attr('data-current','');
