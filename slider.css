@@ -1,0 +1,33 @@
+.slider {
+  width: 100%;
+  background: yellow;
+  position: relative;
+  overflow: scroll;
+}
+
+.js .slider {
+  overflow: hidden;
+}
+
+.slider-panels {
+  width: 999em;
+  overflow: hidden;
+}
+
+.slider-panel {
+  float: left;
+}
+
+.slider-nav {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+}
+
+.slider-nav {
+  display: none;
+}
+
+[data-current] {
+  background: red;
+}
