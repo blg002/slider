@@ -1,8 +1,4 @@
 // Utility
-var Modernizr = window.Modernizr;
-var transformProp = Modernizr.prefixed('transform');
-var transitionProp = Modernizr.prefixed('transition');
-
 if ( typeof Object.create !== 'function' ) {
 	Object.create = function( obj ) {
 		function F() {};
@@ -13,6 +9,10 @@ if ( typeof Object.create !== 'function' ) {
 
 
 (function($) {
+	var Modernizr = window.Modernizr;
+	var transformProp = Modernizr.prefixed('transform');
+	var transitionProp = Modernizr.prefixed('transition');
+
 	var Slider = {
 		init: function( el, config ) {
 			var self = this;
