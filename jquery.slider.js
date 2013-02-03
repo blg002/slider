@@ -26,7 +26,7 @@ if ( typeof Object.create !== 'function' ) {
 			self.$nav          = self.$el.find('.slider-nav');
 			
 			self.$panels       = self.$panels_wrap.find('.slider-panel');
-			self.panels_count = self.$panels.length;
+			self.panels_count  = self.$panels.length;
 			
 			self.current       = 0;
 
@@ -50,11 +50,8 @@ if ( typeof Object.create !== 'function' ) {
 		setWidth: function() {
 			var self = this;
 
-		  self.wrapper_width = self.el.offsetWidth;
-		  self.$panels.width(self.wrapper_width);
-		  self.panel_width = self.$panels[0].offsetWidth;
-
-		  self.$panels_wrap[0].style.width = (self.panel_width * self.panels_count) + 'px';
+		  self.$panels_wrap[0].style.width = (100 * self.panels_count) + '%'
+		  self.$panels.width( (100 / self.panels_count) + '%' );
 		},
 
 		setHeight: function( duration ) {
@@ -77,7 +74,11 @@ if ( typeof Object.create !== 'function' ) {
 		transition: function() {
 			var self = this;
 
-			self.slideIt( self.$panels_wrap, -( self.current * self.panel_width ), self.config.animateDuration );
+			self.slideIt(
+				self.$panels_wrap,
+				(-(100 / self.panels_count) * self.current) + '%',
+				self.config.animateDuration
+			);
 
 			if ( self.config.animateHeight ) { self.setHeight() };
 		},
@@ -86,10 +87,10 @@ if ( typeof Object.create !== 'function' ) {
 			var self = this;
 
 			if (Modernizr.csstransforms3d) {
-				$elem[0].style[transformProp] = 'translate3d(' + x + 'px, 0, 0)';
+				$elem[0].style[transformProp] = 'translate3d('+ x +', 0, 0)';
 		    $elem[0].style[transitionProp] = duration + 'ms';
 			} else if (Modernizr.csstransforms) {
-				$elem[0].style[transformProp] = 'translate(' + x + 'px)';
+				$elem[0].style[transformProp] = 'translate('+ x +')';
 		    $elem[0].style[transitionProp] = duration + 'ms';
 			} else {
 				$elem.animate({ 'margin-left': x });
@@ -151,16 +152,6 @@ if ( typeof Object.create !== 'function' ) {
 	    // Hashchange
       window.onhashchange = function() {
 	      self.setCurrent( self.getPosition() );
-	    }
-
-	    // Window resizing
-	    window.onresize = function() {
-	      if (resizeTimer) { clearTimeout(resizeTimer); }
-	      resizeTimer = setTimeout(function() {
-	        self.setWidth();
-	        if ( self.config.animateHeight ) { self.setHeight( 1 ) };
-	        self.slideIt( self.$panels_wrap, -( self.current * self.panel_width ), 0 );
-	      }, 50);
 	    }
 		}
 	};
