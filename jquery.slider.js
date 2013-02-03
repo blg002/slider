@@ -105,17 +105,13 @@ if ( typeof Object.create !== 'function' ) {
 			self.current = ( panel < 0 ) ? self.panels_count - 1 : panel % self.panels_count;
 			self.$tabs.find('a').removeAttr('data-current').eq(self.current).attr('data-current','');
 
-		  if ( self.config.panelLinking ) {
-		    self.updateUrlHash( self.$panels.eq(self.current).data('panel-id') )
-		  }
-
 			self.transition();
 		},
 
 		getPosition: function( id ) {
 			var self = this;
 
-		  var panel_id = id || window.location.hash.substr(1);
+		  var panel_id = id || window.location.hash.substr(1) || self.$panels.eq(0).data('panel-id');
 		  var panel    = self.$panels.filter('[data-panel-id="' + panel_id + '"]');
 		  var position = self.$panels.index(panel);
 
@@ -123,7 +119,9 @@ if ( typeof Object.create !== 'function' ) {
 		},
 
 		updateUrlHash: function( hash ) {
-		  window.location.hash = hash;
+		  Modernizr.history ?
+		  	window.history.pushState(null, null, '#'+ hash) :
+		  	window.location.hash = hash;
 		},
 		
 
@@ -140,6 +138,7 @@ if ( typeof Object.create !== 'function' ) {
 	      var position = self.getPosition( panel_id );
 
 				self.setCurrent( position );
+			  if ( self.config.panelLinking ) { self.updateUrlHash( panel_id ) }
 			});
 
 			// Button nav
@@ -147,12 +146,30 @@ if ( typeof Object.create !== 'function' ) {
 	      var position = self.current  + ( ~~( $(this).data('dir') === 'next' ) || -1 );
 
 	      self.setCurrent( position );
+
+			  if ( self.config.panelLinking ) {
+			    self.updateUrlHash( self.$panels.eq(self.current).data('panel-id') )
+			  }
 	    });
 
 	    // Hashchange
-      window.onhashchange = function() {
-	      self.setCurrent( self.getPosition() );
-	    }
+			window.onload = function() {
+				if ( !self.config.panelLinking ) { return; }
+
+				if ( Modernizr.history ) {
+				  window.setTimeout(function() {
+				    window.onpopstate = function(e) {
+				    	var position = self.getPosition();
+
+				      self.setCurrent( position );
+				    }
+				  }, 1);
+				} else {
+		      window.onhashchange = function() {
+			      self.setCurrent( self.getPosition() );
+			    }
+				}
+			}
 		}
 	};
 
