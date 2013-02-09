@@ -70,32 +70,36 @@ if ( typeof Object.create !== 'function' ) {
 		},
 
 
-		// -------------------------- animation -------------------------- //
-		transition: function() {
-			var self = this;
+    // -------------------------- animation -------------------------- //
+    transition: function() {
+      var self = this;
 
-			self.slideIt(
+      self.slideIt(
 				self.$panels_wrap,
-				(-(100 / self.panel_length) * self.current) + '%',
+				(-(100 / self.panels_length) * self.current),
 				self.config.animateDuration
 			);
 
-			if ( self.config.animateHeight ) { self.setHeight() };
-		},
+      if (self.config.animateHeight) {
+        self.setHeight()
+      };
+    },
 
-		slideIt: function( $elem, x, duration ) {
-			var self = this;
+    slideIt: function($elem, x, duration) {
+      var self = this;
 
-			if (Modernizr.csstransforms3d) {
-				$elem[0].style[transformProp] = 'translate3d('+ x +', 0, 0)';
-		    $elem[0].style[transitionProp] = duration + 'ms';
-			} else if (Modernizr.csstransforms) {
-				$elem[0].style[transformProp] = 'translate('+ x +')';
-		    $elem[0].style[transitionProp] = duration + 'ms';
-			} else {
-				$elem.animate({ 'margin-left': x });
-			};
-		},
+      if (Modernizr.csstransforms3d) {
+        $elem[0].style[transformProp] = 'translate3d(' + x + '%, 0, 0)';
+        $elem[0].style[transitionProp] = duration + 'ms';
+      } else if (Modernizr.csstransforms) {
+        $elem[0].style[transformProp] = 'translate(' + x + '%)';
+        $elem[0].style[transitionProp] = duration + 'ms';
+      } else {
+        $elem.animate({
+          'margin-left': (x * self.panels_length + '%')
+        });
+      };
+    },
 
 
 		// -------------------------- methods -------------------------- //
