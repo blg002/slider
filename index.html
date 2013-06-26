@@ -10,39 +10,39 @@
 </head>
 <body>
 
-<section class="slider">
+<section class="slider" data-slider-options='{"animateDuration": "1000"}'>
   <div class="slider-tabs">
     <ul>
-      <li><a href="#panel-first" data-panel="first" data-current>First</a></li>
-      <li><a href="#panel-second" data-panel="second">Second</a></li>
-      <li><a href="#panel-third" data-panel="third">Third</a></li>
-      <li><a href="#panel-fourth" data-panel="fourth">Fourth</a></li>
+      <li><a href="#panel-first" class="slider-tab-target is-current">First</a></li>
+      <li><a href="#panel-second" class="slider-tab-target">Second</a></li>
+      <li><a href="#panel-third" class="slider-tab-target">Third</a></li>
+      <li><a href="#panel-fourth" class="slider-tab-target">Fourth</a></li>
     </ul>
   </div>
 
   <div class="slider-panels">
-    <section id="panel-first" data-panel-id="first" class="slider-panel" style="background: orange;">
+    <section id="panel-first" class="slider-panel" style="background: orange;">
       <h2>First</h2>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
     </section>
-    <section id="panel-second" data-panel-id="second" class="slider-panel" style="background: brown;">
+    <section id="panel-second" class="slider-panel" style="background: brown;">
       <h2>Second</h2>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
       <img src="http://placekitten.com/150/150" width="150" height="150">
     </section>
-    <section id="panel-third" data-panel-id="third" class="slider-panel" style="background: purple;">
+    <section id="panel-third" class="slider-panel" style="background: purple;">
       <h2>Third</h2>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
     </section>
-    <section id="panel-fourth" data-panel-id="fourth" class="slider-panel" style="background: green;">
+    <section id="panel-fourth" class="slider-panel" style="background: green;">
       <h2>Fourth</h2>
       <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Aenean commodo ligula eget dolor. Aenean massa. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eu, pretium quis, sem. Nulla consequat massa quis enim. Donec pede justo, fringilla vel, aliquet nec, vulputate eget, arcu.</p>
     </section>
   </div>
 
   <div class="slider-nav">
-    <button data-dir="prev">Previous</button>
-    <button data-dir="next">Next</button>
+    <button class="slider-nav-target" data-dir="prev">Previous</button>
+    <button class="slider-nav-target" data-dir="next">Next</button>
   </div>
 </section>
 
@@ -54,8 +54,9 @@
 <script>
 
 $('.slider').slider({
-  animateHeight: true,
-  panelLinking: true
+  animateHeight: false,
+  panelLinking: false,
+  animateDuration: 2000
 });
 
 </script>

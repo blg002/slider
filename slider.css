@@ -18,6 +18,10 @@
   float: left;
 }
 
+.slider-tab-target.is-current {
+  background: red;
+}
+
 .slider-nav {
   position: absolute;
   right: 0;
@@ -26,8 +30,4 @@
 
 .no-js .slider-nav {
   display: none;
-}
-
-[data-current] {
-  background: red;
 }
