@@ -26,7 +26,7 @@ if ( typeof Object.create !== 'function' ) {
 			self.$nav          = self.$el.find('.slider-nav');
 			
 			self.$panels       = self.$panels_wrap.find('.slider-panel');
-			self.panel_length  = self.$panels.length;
+			self.panels_length  = self.$panels.length;
 			
 			self.current       = 0;
 
@@ -50,8 +50,8 @@ if ( typeof Object.create !== 'function' ) {
 		setWidth: function() {
 			var self = this;
 
-		  self.$panels_wrap[0].style.width = (100 * self.panel_length) + '%'
-		  self.$panels.width( (100 / self.panel_length) + '%' );
+		  self.$panels_wrap[0].style.width = (100 * self.panels_length) + '%'
+		  self.$panels.width( (100 / self.panels_length) + '%' );
 		},
 
 		setHeight: function( duration ) {
@@ -106,7 +106,7 @@ if ( typeof Object.create !== 'function' ) {
 		setCurrent: function( panel ) {
 			var self = this;
 
-			self.current = ( panel < 0 ) ? self.panel_length - 1 : panel % self.panel_length;
+			self.current = ( panel < 0 ) ? self.panels_length - 1 : panel % self.panels_length;
 			self.$tabs.find('a').removeAttr('data-current').eq(self.current).attr('data-current','');
 
 			self.transition();
