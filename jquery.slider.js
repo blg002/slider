@@ -27,33 +27,8 @@ var transitionProp = Modernizr.prefixed('transition');
 		  panelLinking: false
 		},
 
-<<<<<<< HEAD
-(function($) {
-	var Modernizr = window.Modernizr;
-	var transformProp = Modernizr.prefixed('transform');
-	var transitionProp = Modernizr.prefixed('transition');
-
-	var Slider = {
-		init: function( el, config ) {
-			var self = this;
-			
-			self.config = $.extend( {}, $.fn.slider.defaults, config );
-			
-			self.el            = el;
-			self.$el           = $(el);
-			self.$panels_wrap  = self.$el.find('.slider-panels');
-			self.$tabs         = self.$el.find('.slider-tabs');
-			self.$nav          = self.$el.find('.slider-nav');
-			
-			self.$panels       = self.$panels_wrap.find('.slider-panel');
-			self.panels_length  = self.$panels.length;
-			
-			self.current       = 0;
-
-=======
 		init: function() {
 			this.config = $.extend( {}, this.defaults, this.options, this.metadata );
->>>>>>> v2
 
 			// set proper widths
 			this.$panelsWrap[0].style.width = (100 * this.panelsLength) + '%';
@@ -75,13 +50,8 @@ var transitionProp = Modernizr.prefixed('transition');
 		bindEvents: function() {
 			var self = this;
 
-<<<<<<< HEAD
-		  self.$panels_wrap[0].style.width = (100 * self.panels_length) + '%'
-		  self.$panels.width( (100 / self.panels_length) + '%' );
-=======
 			this.$tabLinks.on( 'click', $.proxy(this.handleTabClick, self) );
 			this.$navLinks.on( 'click', $.proxy(this.handleNavClick, self) );
->>>>>>> v2
 		},
 
 		handleTabClick: function( e ) {
@@ -131,22 +101,7 @@ var transitionProp = Modernizr.prefixed('transition');
         this.$panelsWrap.animate({
           'margin-left': (x * self.panelsLength + '%')
         });
-<<<<<<< HEAD
-      };
-    },
-
-
-		// -------------------------- methods -------------------------- //
-		setCurrent: function( panel ) {
-			var self = this;
-
-			self.current = ( panel < 0 ) ? self.panels_length - 1 : panel % self.panels_length;
-			self.$tabs.find('a').removeAttr('data-current').eq(self.current).attr('data-current','');
-
-			self.transition();
-=======
       }
->>>>>>> v2
 		},
 
 		setHeight: function( duration ) {
