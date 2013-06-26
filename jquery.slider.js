@@ -1,13 +1,33 @@
-// Utility
-if ( typeof Object.create !== 'function' ) {
-	Object.create = function( obj ) {
-		function F() {};
-		F.prototype = obj;
-		return new F();
+var Modernizr = window.Modernizr;
+var transformProp = Modernizr.prefixed('transform');
+var transitionProp = Modernizr.prefixed('transition');
+
+;(function($, window, document, undefined) {
+
+	var Slider = function( elem, options ) {
+		this.elem     = elem;
+		this.$elem    = $(elem);
+		this.options  = options;
+		this.metadata = this.$elem.data('slider-options');
+
+		this.$panelsWrap  = this.$elem.find('.slider-panels');
+		this.$tabs        = this.$elem.find('.slider-tabs');
+		this.$tabLinks    = this.$tabs.find('.slider-tab-target');
+		this.$nav         = this.$elem.find('.slider-nav');
+		this.$navLinks    = this.$nav.find('.slider-nav-target');
+		this.$panels      = this.$panelsWrap.find('.slider-panel');
+		this.panelsLength = this.$panels.length;
+		this.current      = 0;
 	};
-}
 
+	Slider.prototype = {
+		defaults: {
+			animateHeight: false,
+		  animateDuration: 500,
+		  panelLinking: false
+		},
 
+<<<<<<< HEAD
 (function($) {
 	var Modernizr = window.Modernizr;
 	var transformProp = Modernizr.prefixed('transform');
@@ -30,74 +50,88 @@ if ( typeof Object.create !== 'function' ) {
 			
 			self.current       = 0;
 
+=======
+		init: function() {
+			this.config = $.extend( {}, this.defaults, this.options, this.metadata );
+>>>>>>> v2
 
-			this.events();
-			this.setup();
+			// set proper widths
+			this.$panelsWrap[0].style.width = (100 * this.panelsLength) + '%';
+			this.$panels.width( (100 / this.panelsLength) + '%' ); 
+
+			this.bindEvents();
+
+			if ( this.config.animateHeight ) { this.setHeight(1); }
+			if ( this.config.panelLinking && window.location.hash ) {
+				var panelID = 'panel-' + window.location.hash.slice(1);
+				var panelIndex = this.getPositionOf( panelID );
+				this.setCurrent( panelIndex );
+			}
+
+			return this;
 		},
 
-
-		// -------------------------- setup -------------------------- //
-		setup: function() {
+		// events
+		bindEvents: function() {
 			var self = this;
 
-			self.setWidth();
-			if ( self.config.animateHeight ) { self.setHeight( 1 ) };
-		  if ( self.config.panelLinking && window.location.hash ) {
-		    self.setCurrent( self.getPosition() );
-		  }
-		},
-
-		setWidth: function() {
-			var self = this;
-
+<<<<<<< HEAD
 		  self.$panels_wrap[0].style.width = (100 * self.panels_length) + '%'
 		  self.$panels.width( (100 / self.panels_length) + '%' );
+=======
+			this.$tabLinks.on( 'click', $.proxy(this.handleTabClick, self) );
+			this.$navLinks.on( 'click', $.proxy(this.handleNavClick, self) );
+>>>>>>> v2
 		},
 
-		setHeight: function( duration ) {
-			var self = this;
+		handleTabClick: function( e ) {
+			e.preventDefault();
+			var link          = e.currentTarget;
+			var panelID       = link.getAttribute('href').slice(1);
+			var newPanelIndex = this.getPositionOf(panelID);
 
-		  var duration = duration || self.config.animateDurationY;
-		  var height = self.$panels.eq(this.current).height()
-
-		  if (Modernizr.csstransitions) {
-		  	self.$panels_wrap[0].style.height = height + 'px';
-		  } else {
-			  self.$panels_wrap.animate({
-			    'height': height
-			  }, duration);
-		  }
+			this.setCurrent( newPanelIndex );
 		},
 
+		handleNavClick: function( e ) {
+			var newPanelIndex = this.current + ( ~~( $(e.currentTarget).data('dir') === 'next' ) || -1 );
+			
+			this.setCurrent( newPanelIndex );
+		},
 
-    // -------------------------- animation -------------------------- //
-    transition: function() {
-      var self = this;
+		// methods
+		getPositionOf: function( panelID ) {
+			var panel = this.$panels.filter('#' + panelID);
+			var position = this.$panels.index(panel);
 
-      self.slideIt(
-				self.$panels_wrap,
-				(-(100 / self.panels_length) * self.current),
-				self.config.animateDuration
-			);
+			return position;
+		},
 
-      if (self.config.animateHeight) {
-        self.setHeight()
-      };
-    },
+		// actions
+		setCurrent: function( panelIndex ) {
+			this.current = panelIndex < 0 ? this.panelsLength - 1 : panelIndex % this.panelsLength;
+			this.$tabLinks.removeClass('is-current').eq(this.current).addClass('is-current');
 
-    slideIt: function($elem, x, duration) {
-      var self = this;
+			this.slippitySlideTo( this.current );
+			if ( this.config.animateHeight ) { this.setHeight(); }
+			if ( this.config.panelLinking )  { this.setUrlHash( this.$panels.eq(this.current).attr('id').split('panel-')[1] ); }
+		},
 
-      if (Modernizr.csstransforms3d) {
-        $elem[0].style[transformProp] = 'translate3d(' + x + '%, 0, 0)';
-        $elem[0].style[transitionProp] = duration + 'ms';
-      } else if (Modernizr.csstransforms) {
-        $elem[0].style[transformProp] = 'translate(' + x + '%)';
-        $elem[0].style[transitionProp] = duration + 'ms';
+		slippitySlideTo: function( panelIndex ) {
+			var x = -(100 / this.panelsLength) * panelIndex;
+
+			// slide
+      if ( Modernizr.csstransforms3d ) {
+        this.$panelsWrap[0].style[transformProp] = 'translate3d(' + x + '%, 0, 0)';
+        this.$panelsWrap[0].style[transitionProp] = this.config.animateDuration + 'ms';
+      } else if ( Modernizr.csstransforms ) {
+        this.$panelsWrap[0].style[transformProp] = 'translate(' + x + '%)';
+        this.$panelsWrap[0].style[transitionProp] = this.config.animateDuration + 'ms';
       } else {
-        $elem.animate({
-          'margin-left': (x * self.panels_length + '%')
+        this.$panelsWrap.animate({
+          'margin-left': (x * self.panelsLength + '%')
         });
+<<<<<<< HEAD
       };
     },
 
@@ -110,84 +144,38 @@ if ( typeof Object.create !== 'function' ) {
 			self.$tabs.find('a').removeAttr('data-current').eq(self.current).attr('data-current','');
 
 			self.transition();
+=======
+      }
+>>>>>>> v2
 		},
 
-		getPosition: function( id ) {
-			var self = this;
-
-		  var panel_id = id || window.location.hash.substr(1) || self.$panels.eq(0).data('panel-id');
-		  var panel    = self.$panels.filter('[data-panel-id="' + panel_id + '"]');
-		  var position = self.$panels.index(panel);
-
-		  return position < 0 ? this.current : position
+		setHeight: function( duration ) {
+			var duration = duration || this.config.animateDuration;
+    	var height = this.$panels.eq(this.current).height();
+    	
+      if ( Modernizr.csstransitions ) {
+		  	this.$panelsWrap[0].style.height = height + 'px';
+		  } else {
+			  this.$panelsWrap.animate({
+			    'height': height
+			  }, duration);
+		  }
 		},
 
-		updateUrlHash: function( hash ) {
-		  Modernizr.history ?
+		setUrlHash: function( hash ) {
+			Modernizr.history ?
 		  	window.history.pushState(null, null, '#'+ hash) :
 		  	window.location.hash = hash;
 		},
-		
-
-		// -------------------------- events -------------------------- //
-		events: function() {
-			var self = this;
-			var resizeTimer;
-
-			// Tabs nav
-			self.$tabs.find('a').on('click', function(e) {
-				e.preventDefault();
-
-				var panel_id = $(this).data('panel');
-	      var position = self.getPosition( panel_id );
-
-				self.setCurrent( position );
-			  if ( self.config.panelLinking ) { self.updateUrlHash( panel_id ) }
-			});
-
-			// Button nav
-	    self.$nav.find('button').on('click', function() {
-	      var position = self.current  + ( ~~( $(this).data('dir') === 'next' ) || -1 );
-
-	      self.setCurrent( position );
-
-			  if ( self.config.panelLinking ) {
-			    self.updateUrlHash( self.$panels.eq(self.current).data('panel-id') )
-			  }
-	    });
-
-	    // Hashchange
-			window.onload = function() {
-				if ( !self.config.panelLinking ) { return; }
-
-				if ( Modernizr.history ) {
-				  window.setTimeout(function() {
-				    window.onpopstate = function(e) {
-				    	var position = self.getPosition();
-
-				      self.setCurrent( position );
-				    }
-				  }, 1);
-				} else {
-		      window.onhashchange = function() {
-			      self.setCurrent( self.getPosition() );
-			    }
-				}
-			}
-		}
 	};
 
-	$.fn.slider = function( config ) {
+
+	Slider.defaults = Slider.prototype.defaults;
+
+	$.fn.slider = function( options ) {
 		return this.each(function() {
-			var obj = Object.create( Slider );
-			obj.init( this, config );
+			new Slider(this, options).init();
 		});
 	};
 
-	$.fn.slider.defaults = {
-		animateHeight: false,
-	  animateDuration: 500,
-	  panelLinking: false
-	};
-
-})( jQuery );
+})(jQuery, window, document);
